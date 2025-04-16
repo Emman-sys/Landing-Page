@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Landing Page</title>
+        <style>
+            body {
+                background-color: #f0f0f0;
+                font-family: Arial, sans-serif;
+                color: #333;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+            }
+
+            
+
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0px;
+                flex-wrap: wrap;
+                width: 90%;
+                max-width: 1200px;
+            }
+
+            .box {
+                position: relative;
+                background-color: #ffffff;
+                border: 1px solid #ffffff;
+                border-radius: 10px;
+                padding: 0px;
+                text-align: center;
+                overflow: hidden;
+                margin: 10px;
+                width: 500px;
+                height: 500px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            .box::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle at var(--x, 5px) var(--y, 5px), rgba(255, 255, 0, 0.5), transparent 50%);
+                pointer-events: none;
+                opacity: 0; 
+                transition: opacity 0.2s ease-out, background 0.1s ease-out;
+            }
+
+            .box:hover::before {
+                opacity: 1;
+            }
+
+          
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="box">
+            </div>
+            <div class="box">
+            </div>
+            <div class="box"> 
+            </div>
+            <div class="box">
+            </div>
+        </div>
+        <script>
+            const boxes = document.querySelectorAll('.box');
+
+            boxes.forEach(box => {
+                box.addEventListener('mousemove', (e) => {
+                    const rect = box.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    box.style.setProperty('--x', `${x}px`);
+                    box.style.setProperty('--y', `${y}px`);
+                });
+
+                box.addEventListener('mouseleave', () => {
+                    box.style.setProperty('--x', `50%`);
+                    box.style.setProperty('--y', `50%`);
+                });
+            });
+        </script>
+    </body>
+</html>
