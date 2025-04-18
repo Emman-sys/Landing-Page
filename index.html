@@ -16,13 +16,11 @@
                 min-height: 100vh;
             }
 
-            
-
             .container {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                gap: 0px;
+                gap: 20px;
                 flex-wrap: wrap;
                 width: 90%;
                 max-width: 1200px;
@@ -42,54 +40,94 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             }
 
-            .box::before {
+            /*box1*/
+            .box:nth-child(1)::before {
                 content: '';
                 position: absolute;
                 top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: radial-gradient(circle at var(--x, 5px) var(--y, 5px), rgba(255, 255, 0, 0.5), transparent 50%);
+                background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 0, 0.5), transparent 50%);
                 pointer-events: none;
-                opacity: 0; 
+                opacity: 0;
                 transition: opacity 0.2s ease-out, background 0.1s ease-out;
             }
 
-            .box:hover::before {
+            .box:nth-child(1):hover::before {
                 opacity: 1;
             }
 
-          
+            /*box2*/
+            .emoji {
+                position: absolute;
+                font-size: 20px;
+                pointer-events: none;
+                animation: fadeOut 1s ease forwards;
+            }
+
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+            }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="box">
+                <p>Box 1</p>
             </div>
             <div class="box">
-            </div>
-            <div class="box"> 
+                <p>Box 2</p>
             </div>
             <div class="box">
+                <p>Box 3</p>
+            </div>
+            <div class="box">
+                <p>Box 4</p>
             </div>
         </div>
         <script>
-            const boxes = document.querySelectorAll('.box');
+            //Box1 Start
+            const box1 = document.querySelector('.container .box:nth-child(1)');
+            box1.addEventListener('mousemove', (e) => {
+                const rect = box1.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
-            boxes.forEach(box => {
-                box.addEventListener('mousemove', (e) => {
-                    const rect = box.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
+                box1.style.setProperty('--x', `${x}px`);
+                box1.style.setProperty('--y', `${y}px`);
+            });
 
-                    box.style.setProperty('--x', `${x}px`);
-                    box.style.setProperty('--y', `${y}px`);
-                });
+            box1.addEventListener('mouseleave', () => {
+                box1.style.setProperty('--x', `50%`);
+                box1.style.setProperty('--y', `50%`);
+            });
+            //Box1 End
 
-                box.addEventListener('mouseleave', () => {
-                    box.style.setProperty('--x', `50%`);
-                    box.style.setProperty('--y', `50%`);
-                });
+            //Box2 Start
+            const box2 = document.querySelector('.container .box:nth-child(2)');
+            const emojis = ['😀', '🎉', '✨', '🔥', '💖', '🌟', '🍀', '🌈'];
+
+            box2.addEventListener('mousemove', (e) => {
+                const rect = box2.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const emoji = document.createElement('div');
+                emoji.classList.add('emoji');
+                emoji.style.left = `${x}px`;
+                emoji.style.top = `${y}px`;
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+                box2.appendChild(emoji);
+
+                setTimeout(() => {
+                    emoji.remove();
+                }, 1000);
+                //Box2 End
             });
         </script>
     </body>
