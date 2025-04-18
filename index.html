@@ -134,10 +134,16 @@
             });
 
             const box3 = document.querySelector('.container .box:nth-child(3)');
-            const cat = document.createElement('img');
-            cat.src = 'noFilter.webp';
-            cat.classList.add('cat');
-            box3.appendChild(cat);
+            const staticCat = document.createElement('img');
+            staticCat.src = 'noFilter.webp';
+            staticCat.classList.add('cat');
+            box3.appendChild(staticCat);
+
+            const movingCat = document.createElement('img');
+            movingCat.src = 'giphy.gif';
+            movingCat.classList.add('cat');
+            movingCat.style.display = 'none';
+            box3.appendChild(movingCat);
 
             let mouseX = 0;
             let mouseY = 0;
@@ -146,8 +152,8 @@
 
             box3.addEventListener('mousemove', (e) => {
                 const rect = box3.getBoundingClientRect();
-                mouseX = e.clientX - rect.left - cat.offsetWidth / 2-250;
-                mouseY = e.clientY - rect.top - cat.offsetHeight / 2-50;
+                mouseX = e.clientX - rect.left - staticCat.offsetWidth / 2 -60;
+                mouseY = e.clientY - rect.top - staticCat.offsetHeight / 2 -70;
             });
 
             setInterval(() => {
@@ -157,15 +163,17 @@
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance > 1) {
-                    if (cat.src !== 'giphy.gif') {
-                        cat.src = 'giphy.gif';
-                     }           
+                    staticCat.style.display = 'none';
+                    movingCat.style.display = 'block';
+
                     catX += (dx / distance) * speed;
                     catY += (dy / distance) * speed;
 
-                    cat.style.transform = `translate(${catX}px, ${catY}px)`;
+                    movingCat.style.transform = `translate(${catX}px, ${catY}px)`;
+                    staticCat.style.transform = `translate(${catX}px, ${catY}px)`;
                 } else {
-                    cat.src = 'noFilter.webp'; // Revert to the original image
+                    staticCat.style.display = 'block';
+                    movingCat.style.display = 'none';
                 }
             }, 16);
         </script>
