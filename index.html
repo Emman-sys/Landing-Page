@@ -79,6 +79,21 @@
                 pointer-events: none;
                 transition: transform 0.1s ease-out;
             }
+
+            .disappearing-text {
+                font-size: 20px;
+                line-height: 1.5;
+                display: inline-block;
+                overflow: hidden;
+                white-space: nowrap;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .disappearing-text span {
+display: inline-block;
+                transition: opacity 0.3s ease;
+            }
         </style>
     </head>
     <body>
@@ -93,7 +108,11 @@
                 <p>Box 3</p>
             </div>
             <div class="box">
-                <p>Box 4</p>
+                <p class="disappearing-text">
+                    Hi im Emmanuelle Pranada this is my landing page 
+                    Emman-sys is my github 
+                    uhhhhhhhh gabagooo
+                </p>
             </div>
         </div>
         <script>
@@ -176,6 +195,33 @@
                     movingCat.style.display = 'none';
                 }
             }, 16);
+
+            const box4 = document.querySelector('.container .box:nth-child(4)');
+            const textElement = box4.querySelector('.disappearing-text');
+            const textContent = textElement.textContent;
+
+            // Clear the text content and wrap each letter in a span
+            textElement.textContent = '';
+            textContent.split('').forEach((char) => {
+                const span = document.createElement('span');
+                span.textContent = char === ' ' ? '\u00A0' : char; // Preserve spaces
+                textElement.appendChild(span);
+            });
+
+            // Add hover effect to each span
+            const spans = textElement.querySelectorAll('span');
+            spans.forEach((span) => {
+                span.addEventListener('mouseenter', () => {
+                    span.style.transition = 'opacity 0.3s ease';
+                    span.style.opacity = '0';
+                });
+
+                span.addEventListener('mouseleave', () => {
+                    setTimeout(() => {
+                        span.style.opacity = '1';
+                    }, 300); // Delay before reappearing
+                });
+            });
         </script>
     </body>
 </html>
