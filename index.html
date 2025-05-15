@@ -41,7 +41,9 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             }
 
-            .box:nth-child(1)::before {
+            
+
+            .box:nth-child(4)::before {
                 content: '';
                 position: absolute;
                 top: 0;
@@ -54,7 +56,7 @@
                 transition: opacity 0.2s ease-out, background 0.1s ease-out;
             }
 
-            .box:nth-child(1):hover::before {
+            .box:nth-child(4):hover::before {
                 opacity: 1;
             }
 
@@ -81,17 +83,21 @@
             }
 
             .disappearing-text {
-                font-size: 20px;
-                line-height: 1.5;
-                display: inline-block;
+                font-size: 19px;
+                line-height: 1; 
+                display: block;
                 overflow: hidden;
-                white-space: nowrap;
+                white-space: normal;
+                word-wrap: break-word;
                 width: 100%;
                 box-sizing: border-box;
+                margin: 0; 
+                padding: 10px; 
+                text-align: start; 
             }
 
             .disappearing-text span {
-display: inline-block;
+                display: inline-block;
                 transition: opacity 0.3s ease;
             }
         </style>
@@ -99,20 +105,39 @@ display: inline-block;
     <body>
         <div class="container">
             <div class="box">
-                <p>Box 1</p>
-            </div>
-            <div class="box">
-                <p>Box 2</p>
-            </div>
-            <div class="box">
-                <p>Box 3</p>
-            </div>
-            <div class="box">
                 <p class="disappearing-text">
-                    Hi im Emmanuelle Pranada this is my landing page 
-                    Emman-sys is my github 
-                    uhhhhhhhh gabagooo
+Hi im Emmanuelle Pranada
                 </p>
+                <p class="disappearing-text">
+I am a student of National University
+                </p>
+                <p class="disappearing-text">
+I dont know how to make a landing page
+                </p>
+                <p class="disappearing-text">
+So i just copy paste the code from the internet
+                </p>
+                <p class="disappearing-text">
+But thank god for stack overflow amirite?
+                </p>
+                <p class="disappearing-text">
+God i hate designing this page
+                </p>
+                <p class="disappearing-text">
+Pro tip : if you dont know how to draw
+                </p>
+                <p class="disappearing-text">
+Pay someone to do it for you
+                </p>
+                <p class="disappearing-text">
+But im broke soooooooooooooooooo ¯\_(ツ)_/¯
+                </p>
+            </div>
+            <div class="box">
+            </div>
+            <div class="box">
+            </div>
+            <div class="box">
             </div>
         </div>
         <script>
@@ -171,8 +196,8 @@ display: inline-block;
 
             box3.addEventListener('mousemove', (e) => {
                 const rect = box3.getBoundingClientRect();
-                mouseX = e.clientX - rect.left - staticCat.offsetWidth / 2 -60;
-                mouseY = e.clientY - rect.top - staticCat.offsetHeight / 2 -70;
+                mouseX = e.clientX - rect.left - staticCat.offsetWidth / 2 - 60;
+                mouseY = e.clientY - rect.top - staticCat.offsetHeight / 2 - 70;
             });
 
             setInterval(() => {
@@ -196,31 +221,47 @@ display: inline-block;
                 }
             }, 16);
 
-            const box4 = document.querySelector('.container .box:nth-child(4)');
-            const textElement = box4.querySelector('.disappearing-text');
-            const textContent = textElement.textContent;
+            const disappearingTextElements = document.querySelectorAll('.disappearing-text');
 
-        
-            textElement.textContent = '';
-            textContent.split('').forEach((char) => {
-                const span = document.createElement('span');
-                span.textContent = char === ' ' ? '\u00A0' : char; // Preserve spaces
-                textElement.appendChild(span);
+            disappearingTextElements.forEach((textElement) => {
+                const textContent = textElement.textContent;
+
+                textElement.textContent = '';
+
+                textContent.split('').forEach((char) => {
+                    const span = document.createElement('span');
+                    span.textContent = char === ' ' ? '\u00A0' : char;
+                    textElement.appendChild(span);
+                });
+
+                const spans = textElement.querySelectorAll('span');
+                spans.forEach((span) => {
+                    span.addEventListener('mouseenter', () => {
+                        span.style.transition = 'opacity 0.3s ease';
+                        span.style.opacity = '0';
+                    });
+
+                    span.addEventListener('mouseleave', () => {
+                        setTimeout(() => {
+                            span.style.opacity = '1';
+                        }, 300);
+                    });
+                });
             });
 
-        
-            const spans = textElement.querySelectorAll('span');
-            spans.forEach((span) => {
-                span.addEventListener('mouseenter', () => {
-                    span.style.transition = 'opacity 0.3s ease';
-                    span.style.opacity = '0';
-                });
+            const box4 = document.querySelector('.container .box:nth-child(4)'); // Target the fourth box
+            box4.addEventListener('mousemove', (e) => {
+                const rect = box4.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
-                span.addEventListener('mouseleave', () => {
-                    setTimeout(() => {
-                        span.style.opacity = '1';
-                    }, 300);
-                });
+                box4.style.setProperty('--x', `${x}px`);
+                box4.style.setProperty('--y', `${y}px`);
+            });
+
+            box4.addEventListener('mouseleave', () => {
+                box4.style.setProperty('--x', `50%`);
+                box4.style.setProperty('--y', `50%`);
             });
         </script>
     </body>
